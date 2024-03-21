@@ -9,7 +9,7 @@ class Stock:
     def average_price_difference(self):
         if not self.prices:
             return 0
-        total_difference = sum(close - open for open, close in self.prices)
+        total_difference = sum((close_price - open_price) for open_price, close_price in self.prices)
         return total_difference / len(self.prices)
 
     def max_min_prices(self):
@@ -23,10 +23,12 @@ def read_file(filename):
     stocks = {}
     with open(filename, 'r') as file:
         num_stocks = int(file.readline().strip())
-        for _ in range(num_stocks):
-            code, open_price, close_price = file.readline().strip().split()
+        print(num_stocks)
+        for line in file.readlines():
+            code, open_price, close_price = line.strip().split()
             open_price = float(open_price)
             close_price = float(close_price)
+            # print(open_price, close_price)
             if code not in stocks:
                 stocks[code] = Stock(code)
             stocks[code].add_price(open_price, close_price)
